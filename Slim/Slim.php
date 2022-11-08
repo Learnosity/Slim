@@ -772,15 +772,12 @@ class Slim
      * @param  int                       $time The last modified UNIX timestamp
      * @throws \InvalidArgumentException If provided timestamp is not an integer
      */
-    public function lastModified($time)
+    public function lastModified(int $time)
     {
-        if (is_integer($time)) {
-            $this->response->headers->set('Last-Modified', gmdate('D, d M Y H:i:s T', $time));
-            if ($time === strtotime($this->request->headers->get('IF_MODIFIED_SINCE'))) {
-                $this->halt(304);
-            }
-        } else {
-            throw new \InvalidArgumentException('Slim::lastModified only accepts an integer UNIX timestamp value.');
+        $this->response->headers->set('Last-Modified', gmdate('D, d M Y H:i:s T', $time));
+        $ifModifiedSince = $this->request->headers->get('IF_MODIFIED_SINCE');
+        if ($ifModifiedSince && $time === strtotime($ifModifiedSince)) {
+            $this->halt(304);
         }
     }
 
@@ -800,7 +797,7 @@ class Slim
      * @param  string                    $type  The type of etag to create; either "strong" or "weak"
      * @throws \InvalidArgumentException If provided type is invalid
      */
-    public function etag($value, $type = 'strong')
+    public function etag($value, string $type = 'strong')
     {
         //Ensure type is correct
         if (!in_array($type, array('strong', 'weak'))) {
@@ -886,7 +883,7 @@ class Slim
      * @param  bool        $deleteIfInvalid
      * @return string|null
      */
-    public function getCookie($name, $deleteIfInvalid = true)
+    public function getCookie($name, bool $deleteIfInvalid = true)
     {
         // Get cookie value
         $value = $this->request->cookies->get($name);
@@ -917,18 +914,18 @@ class Slim
      *
      * Set encrypted HTTP cookie
      *
-     * @param string    $name       The cookie name
+     * @param string $name       The cookie name
      * @param mixed     $value      The cookie value
      * @param mixed     $expires    The duration of the cookie;
      *                                  If integer, should be UNIX timestamp;
      *                                  If string, converted to UNIX timestamp with `strtotime`;
-     * @param string    $path       The path on the server in which the cookie will be available on
-     * @param string    $domain     The domain that the cookie is available to
+     * @param string|null $path       The path on the server in which the cookie will be available on
+     * @param string|null $domain     The domain that the cookie is available to
      * @param bool      $secure     Indicates that the cookie should only be transmitted over a secure
      *                              HTTPS connection from the client
      * @param  bool     $httponly   When TRUE the cookie will be made accessible only through the HTTP protocol
      */
-    public function setEncryptedCookie($name, $value, $expires = null, $path = null, $domain = null, $secure = false, $httponly = false)
+    public function setEncryptedCookie(string $name, $value, $expires = null, string $path = null, string $domain = null, bool $secure = false, bool $httponly = false)
     {
         $this->setCookie($name, $value, $expires, $path, $domain, $secure, $httponly);
     }
@@ -942,11 +939,11 @@ class Slim
      * or return NULL if cookie does not exist. Encrypted cookies created during
      * the current request will not be available until the next request.
      *
-     * @param  string       $name
-     * @param  bool         $deleteIfInvalid
+     * @param string $name
+     * @param bool $deleteIfInvalid
      * @return string|bool
      */
-    public function getEncryptedCookie($name, $deleteIfInvalid = true)
+    public function getEncryptedCookie(string $name, bool $deleteIfInvalid = true)
     {
         return $this->getCookie($name, $deleteIfInvalid);
     }
@@ -960,14 +957,14 @@ class Slim
      * removed. If any of this method's arguments are omitted or set to NULL, the
      * default Cookie setting values (set during Slim::init) will be used instead.
      *
-     * @param string    $name       The cookie name
-     * @param string    $path       The path on the server in which the cookie will be available on
-     * @param string    $domain     The domain that the cookie is available to
-     * @param bool      $secure     Indicates that the cookie should only be transmitted over a secure
+     * @param string $name       The cookie name
+     * @param string|null $path       The path on the server in which the cookie will be available on
+     * @param string|null $domain     The domain that the cookie is available to
+     * @param bool|null $secure     Indicates that the cookie should only be transmitted over a secure
      *                              HTTPS connection from the client
-     * @param  bool     $httponly   When TRUE the cookie will be made accessible only through the HTTP protocol
+     * @param bool|null $httponly   When TRUE the cookie will be made accessible only through the HTTP protocol
      */
-    public function deleteCookie($name, $path = null, $domain = null, $secure = null, $httponly = null)
+    public function deleteCookie(string $name, string $path = null, string $domain = null, bool $secure = null, bool $httponly = null)
     {
         $settings = array(
             'domain' => is_null($domain) ? $this->config('cookies.domain') : $domain,
@@ -1030,12 +1027,12 @@ class Slim
      * If you need to render a template AND customize the response status,
      * use the application's `render()` method instead.
      *
-     * @param  int      $status     The HTTP response status
-     * @param  string   $message    The HTTP response body
+     * @param int $status     The HTTP response status
+     * @param string $message    The HTTP response body
      *
      * @return never
      */
-    public function halt($status, $message = '')
+    public function halt(int $status, string $message = '')
     {
         $this->cleanBuffer();
         $this->response->status($status);
@@ -1060,30 +1057,30 @@ class Slim
 
     /**
      * Set the HTTP response Content-Type
-     * @param  string   $type   The Content-Type for the Response (ie. text/html)
+     * @param string $type   The Content-Type for the Response (ie. text/html)
      */
-    public function contentType($type)
+    public function contentType(string $type)
     {
         $this->response->headers->set('Content-Type', $type);
     }
 
     /**
      * Set the HTTP response status code
-     * @param  int      $code     The HTTP response status code
+     * @param int $code     The HTTP response status code
      */
-    public function status($code)
+    public function status(int $code)
     {
         $this->response->setStatus($code);
     }
 
     /**
      * Get the URL for a named route
-     * @param  string               $name       The route name
-     * @param  array                $params     Associative array of URL parameters and replacement values
-     * @throws \RuntimeException    If named route does not exist
+     * @param string $name       The route name
+     * @param array $params     Associative array of URL parameters and replacement values
      * @return string
+     *@throws \RuntimeException    If named route does not exist
      */
-    public function urlFor($name, $params = array())
+    public function urlFor(string $name, array $params = array())
     {
         return $this->request->getRootUri() . $this->router->urlFor($name, $params);
     }
@@ -1097,12 +1094,12 @@ class Slim
      * 3xx status code if you want. This method will automatically set the
      * HTTP Location header for you using the URL parameter.
      *
-     * @param  string   $url        The destination URL
-     * @param  int      $status     The HTTP redirect status code (optional)
+     * @param string $url        The destination URL
+     * @param int $status     The HTTP redirect status code (optional)
      *
      * @return never
      */
-    public function redirect($url, $status = 302)
+    public function redirect(string $url, int $status = 302)
     {
         $this->response->redirect($url, $status);
         $this->halt($status);
@@ -1113,10 +1110,10 @@ class Slim
      *
      * Redirects to a specific named route
      *
-     * @param string    $route      The route name
-     * @param array     $params     Associative array of URL parameters and replacement values
+     * @param string $route      The route name
+     * @param array $params     Associative array of URL parameters and replacement values
      */
-    public function redirectTo($route, $params = array(), $status = 302){
+    public function redirectTo(string $route, array $params = array(), $status = 302){
         $this->redirect($this->urlFor($route, $params), $status);
     }
 
@@ -1174,11 +1171,11 @@ class Slim
 
     /**
      * Assign hook
-     * @param  string   $name       The hook name
+     * @param string $name       The hook name
      * @param  mixed    $callable   A callable object
-     * @param  int      $priority   The hook priority; 0 = high, 10 = low
+     * @param int $priority   The hook priority; 0 = high, 10 = low
      */
-    public function hook($name, $callable, $priority = 10)
+    public function hook(string $name, $callable, int $priority = 10)
     {
         if (!isset($this->hooks[$name])) {
             $this->hooks[$name] = array(array());
@@ -1190,9 +1187,9 @@ class Slim
 
     /**
      * Invoke hook
-     * @param  string $name,... The hook name. (Optional) Argument(s) for hooked functions, can specify multiple arguments
+     * @param string $name,... The hook name. (Optional) Argument(s) for hooked functions, can specify multiple arguments
      */
-    public function applyHook($name)
+    public function applyHook(string $name, ...$args)
     {
         if (!isset($this->hooks[$name])) {
             $this->hooks[$name] = array(array());
@@ -1202,9 +1199,6 @@ class Slim
             if (count($this->hooks[$name]) > 1) {
                 ksort($this->hooks[$name]);
             }
-
-            $args = func_get_args();
-            array_shift($args);
 
             foreach ($this->hooks[$name] as $priority) {
                 if (!empty($priority)) {
@@ -1224,13 +1218,13 @@ class Slim
      * Else, all listeners are returned as an associative array whose
      * keys are hook names and whose values are arrays of listeners.
      *
-     * @param  string     $name     A hook name (Optional)
+     * @param string|null $name     A hook name (Optional)
      * @return array|null
      */
-    public function getHooks($name = null)
+    public function getHooks(string $name = null): ?array
     {
         if (!is_null($name)) {
-            return isset($this->hooks[(string) $name]) ? $this->hooks[(string) $name] : null;
+            return $this->hooks[$name] ?? null;
         } else {
             return $this->hooks;
         }
@@ -1243,12 +1237,12 @@ class Slim
      * a valid hook name, only the listeners attached
      * to that hook will be cleared.
      *
-     * @param  string   $name   A hook name (Optional)
+     * @param string|null $name   A hook name (Optional)
      */
-    public function clearHooks($name = null)
+    public function clearHooks(string $name = null)
     {
-        if (!is_null($name) && isset($this->hooks[(string) $name])) {
-            $this->hooks[(string) $name] = array(array());
+        if (!is_null($name) && isset($this->hooks[$name])) {
+            $this->hooks[$name] = array(array());
         } else {
             foreach ($this->hooks as $key => $value) {
                 $this->hooks[$key] = array(array());
@@ -1304,7 +1298,7 @@ class Slim
         $this->middleware[0]->call();
 
         //Fetch status, header, and body
-        list($status, $headers, $body) = $this->response->finalize();
+        [$status, $headers, $body] = $this->response->finalize();
 
         // Serialize cookies (with optional encryption)
         \Slim\Http\Util::serializeCookies($headers, $this->response->cookies, $this->settings);
@@ -1402,7 +1396,6 @@ class Slim
      * @param  string         $errstr  The error message
      * @param  string         $errfile The absolute path to the affected file
      * @param  int            $errline The line number of the error in the affected file
-     * @return bool
      * @throws \ErrorException
      */
     public static function handleErrors($errno, $errstr = '', $errfile = '', $errline = '')
@@ -1419,11 +1412,11 @@ class Slim
      *
      * This method accepts a title and body content to generate an HTML document layout.
      *
-     * @param  string   $title  The title of the HTML template
-     * @param  string   $body   The body content of the HTML template
+     * @param string $title  The title of the HTML template
+     * @param string $body   The body content of the HTML template
      * @return string
      */
-    protected static function generateTemplateMarkup($title, $body)
+    protected static function generateTemplateMarkup(string $title, string $body)
     {
         return sprintf("<html><head><title>%s</title><style>body{margin:0;padding:30px;font:12px/1.5 Helvetica,Arial,Verdana,sans-serif;}h1{margin:0;font-size:48px;font-weight:normal;line-height:48px;}strong{display:inline-block;width:65px;}</style></head><body><h1>%s</h1>%s</body></html>", $title, $title, $body);
     }
