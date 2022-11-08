@@ -137,9 +137,14 @@ class ContentTypes extends \Slim\Middleware
     {
         if (class_exists('SimpleXMLElement')) {
             try {
-                $backup = libxml_disable_entity_loader(true);
+                $disableEntityLoader = \LIBXML_VERSION < 20900;
+                if ($disableEntityLoader) {
+                    $previousEntityLoaderState = libxml_disable_entity_loader(true);
+                }
                 $result = new \SimpleXMLElement($input);
-                libxml_disable_entity_loader($backup);
+                if ($disableEntityLoader) {
+                    libxml_disable_entity_loader($previousEntityLoaderState);
+                }
                 return $result;
             } catch (\Exception $e) {
                 // Do nothing
@@ -160,6 +165,7 @@ class ContentTypes extends \Slim\Middleware
      */
     protected function parseCsv($input)
     {
+        /** @var resource $temp */
         $temp = fopen('php://memory', 'rw');
         fwrite($temp, $input);
         fseek($temp, 0);

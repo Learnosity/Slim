@@ -155,7 +155,7 @@ class Flash extends \Slim\Middleware implements \ArrayAccess, \IteratorAggregate
     /**
      * Array Access: Offset Exists
      */
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         $messages = $this->getMessages();
 
@@ -165,6 +165,7 @@ class Flash extends \Slim\Middleware implements \ArrayAccess, \IteratorAggregate
     /**
      * Array Access: Offset Get
      */
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         $messages = $this->getMessages();
@@ -175,7 +176,7 @@ class Flash extends \Slim\Middleware implements \ArrayAccess, \IteratorAggregate
     /**
      * Array Access: Offset Set
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         $this->now($offset, $value);
     }
@@ -183,7 +184,7 @@ class Flash extends \Slim\Middleware implements \ArrayAccess, \IteratorAggregate
     /**
      * Array Access: Offset Unset
      */
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         unset($this->messages['prev'][$offset], $this->messages['now'][$offset]);
     }
@@ -192,7 +193,7 @@ class Flash extends \Slim\Middleware implements \ArrayAccess, \IteratorAggregate
      * Iterator Aggregate: Get Iterator
      * @return \ArrayIterator
      */
-    public function getIterator()
+    public function getIterator(): \Iterator
     {
         $messages = $this->getMessages();
 
@@ -202,7 +203,7 @@ class Flash extends \Slim\Middleware implements \ArrayAccess, \IteratorAggregate
     /**
      * Countable: Count
      */
-    public function count()
+    public function count(): int
     {
         return count($this->getMessages());
     }

@@ -84,7 +84,7 @@ class Request
     {
         $this->env = $env;
         $this->headers = new \Slim\Http\Headers(\Slim\Http\Headers::extract($env));
-        $this->cookies = new \Slim\Helper\Set(\Slim\Http\Util::parseCookieHeader($env['HTTP_COOKIE']));
+        $this->cookies = new \Slim\Helper\Set(\Slim\Http\Util::parseCookieHeader($env['HTTP_COOKIE'] ?? ''));
     }
 
     /**
@@ -433,7 +433,8 @@ class Request
         $contentType = $this->getContentType();
         $contentTypeParams = array();
         if ($contentType) {
-            $contentTypeParts = preg_split('/\s*[;,]\s*/', $contentType);
+            /** @var mixed[] $contentTypeParts */
+            $contentTypeParts = (array) preg_split('/\s*[;,]\s*/', $contentType);
             $contentTypePartsLength = count($contentTypeParts);
             for ($i = 1; $i < $contentTypePartsLength; $i++) {
                 $paramParts = explode('=', $contentTypeParts[$i]);

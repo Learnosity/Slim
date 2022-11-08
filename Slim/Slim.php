@@ -60,7 +60,7 @@ class Slim
     public $container;
 
     /**
-     * @var array[\Slim]
+     * @var array<self>
      */
     protected static $apps = array();
 
@@ -431,7 +431,7 @@ class Slim
      *
      * Slim::get('/foo'[, middleware, middleware, ...], callable);
      *
-     * @param   array (See notes above)
+     * @param   array $args (See notes above)
      * @return  \Slim\Route
      */
     protected function mapRoute($args)
@@ -839,7 +839,7 @@ class Slim
     public function expires($time)
     {
         if (is_string($time)) {
-            $time = strtotime($time);
+            $time = (int) strtotime($time);
         }
         $this->response->headers->set('Expires', gmdate('D, d M Y H:i:s T', $time));
     }
@@ -1014,6 +1014,7 @@ class Slim
      * and the response will be sent as is to the HTTP client.
      *
      * @throws \Slim\Exception\Stop
+     * @return never
      */
     public function stop()
     {
@@ -1031,6 +1032,8 @@ class Slim
      *
      * @param  int      $status     The HTTP response status
      * @param  string   $message    The HTTP response body
+     *
+     * @return never
      */
     public function halt($status, $message = '')
     {
@@ -1096,6 +1099,8 @@ class Slim
      *
      * @param  string   $url        The destination URL
      * @param  int      $status     The HTTP redirect status code (optional)
+     *
+     * @return never
      */
     public function redirect($url, $status = 302)
     {
@@ -1185,8 +1190,7 @@ class Slim
 
     /**
      * Invoke hook
-     * @param  string $name The hook name
-     * @param  mixed  ...   (Optional) Argument(s) for hooked functions, can specify multiple arguments
+     * @param  string $name,... The hook name. (Optional) Argument(s) for hooked functions, can specify multiple arguments
      */
     public function applyHook($name)
     {
@@ -1262,7 +1266,7 @@ class Slim
      * This method prepends new middleware to the application middleware stack.
      * The argument must be an instance that subclasses Slim_Middleware.
      *
-     * @param \Slim\Middleware
+     * @param \Slim\Middleware $newMiddleware
      */
     public function add(\Slim\Middleware $newMiddleware)
     {
