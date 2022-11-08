@@ -30,7 +30,7 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-class SlimHttpUtilTest extends \PHPUnit\Framework\TestCase
+class SlimHttpUtilTest extends SlimTestCase
 {
     /**
      * Test strip slashes when magic quotes disabled
@@ -78,7 +78,7 @@ class SlimHttpUtilTest extends \PHPUnit\Framework\TestCase
     public function testEncryptAndDecryptWithValidData(): void
     {
         if (!function_exists('mcrypt_list_algorithms')) {
-            $this->markTestSkipped(('mcrypt not available.'));
+            $this->markTestSkipped('mcrypt not available.');
         }
         if (version_compare(PHP_VERSION, '7.1', '>=')) {
             // mcrypt is deprecated

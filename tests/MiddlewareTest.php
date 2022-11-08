@@ -35,7 +35,7 @@ class MyMiddleware extends \Slim\Middleware
     public function call() {}
 }
 
-class MiddlewareTest extends \PHPUnit\Framework\TestCase
+class MiddlewareTest extends SlimTestCase
 {
     public function testSetApplication(): void
     {

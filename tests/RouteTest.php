@@ -51,7 +51,7 @@ class FooTestClass {
     }
 }
 
-class RouteTest extends \PHPUnit\Framework\TestCase
+class RouteTest extends SlimTestCase
 {
     public function testGetPattern(): void
     {

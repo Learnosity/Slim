@@ -30,7 +30,7 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-class LogWriterTest extends \PHPUnit\Framework\TestCase
+class LogWriterTest extends SlimTestCase
 {
     public function testInstantiation(): void
     {

@@ -67,7 +67,7 @@ class CustomMiddleware extends \Slim\Middleware
     }
 }
 
-class SlimTest extends \PHPUnit\Framework\TestCase
+class SlimTest extends SlimTestCase
 {
     protected function setUp(): void
     {
@@ -709,20 +709,6 @@ class SlimTest extends \PHPUnit\Framework\TestCase
         });
         $s->call();
         $this->assertEquals(200, $s->response()->status());
-    }
-
-    public function testLastModifiedOnlyAcceptsIntegers(): void
-    {
-        self::expectException(\InvalidArgumentException::class);
-        \Slim\Environment::mock(array(
-            'SCRIPT_NAME' => '/foo', //<-- Physical
-            'PATH_INFO' => '/bar', //<-- Virtual
-        ));
-        $s = new \Slim\Slim();
-        $s->get('/bar', function () use ($s) {
-            $s->lastModified('Test');
-        });
-        $s->call();
     }
 
     /**
@@ -1384,18 +1370,16 @@ class SlimTest extends \PHPUnit\Framework\TestCase
      */
     public function testTriggeredErrorsAreConvertedToErrorExceptions(): void
     {
-        $this->markTestSkipped();
-
         $s = new \Slim\Slim(array(
             'debug' => false
         ));
         $s->error(function ( $e ) {
-            if ($e instanceof \ErrorException) {
+            if ($e instanceof \ErrorException || $e instanceof \PHPUnit\Framework\Error\Error) {
                 echo $e->getMessage();
             }
         });
         $s->get('/bar', function () {
-            trigger_error('Foo I say!');
+            trigger_error('Foo I say!', E_USER_ERROR);
         });
         $s->call();
         list($status, $header, $body) = $s->response()->finalize();
@@ -1495,7 +1479,7 @@ class SlimTest extends \PHPUnit\Framework\TestCase
         $s = new \Slim\Slim();
         $errCallback = function () { echo "404"; };
         $s->error($errCallback);
-        $this->assertSame($errCallback, \PHPUnit\Framework\Assert::readAttribute($s, 'error'));
+        $this->assertSame($errCallback, SlimAssert::readAttribute($s, 'error'));
     }
 
     /**
@@ -1515,7 +1499,7 @@ class SlimTest extends \PHPUnit\Framework\TestCase
         $s = new \Slim\Slim();
         $notFoundCallback = function () { echo "404"; };
         $s->notFound($notFoundCallback);
-        $this->assertSame($notFoundCallback, \PHPUnit\Framework\Assert::readAttribute($s, 'notFound'));
+        $this->assertSame($notFoundCallback, SlimAssert::readAttribute($s, 'notFound'));
     }
 
     /**

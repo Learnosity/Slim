@@ -40,7 +40,7 @@ class MyWriter
     }
 }
 
-class LogTest extends \PHPUnit\Framework\TestCase
+class LogTest extends SlimTestCase
 {
     public function testEnabled(): void
     {

@@ -30,7 +30,7 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-class RouterTest extends \PHPUnit\Framework\TestCase
+class RouterTest extends SlimTestCase
 {
     /**
      * Constructor should initialize routes as empty array

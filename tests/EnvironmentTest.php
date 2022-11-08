@@ -30,7 +30,7 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-class EnvironmentTest extends \PHPUnit\Framework\TestCase
+class EnvironmentTest extends SlimTestCase
 {
     /**
      * Default server settings assume the Slim app is installed

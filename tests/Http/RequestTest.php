@@ -30,7 +30,7 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-class RequestTest extends \PHPUnit\Framework\TestCase
+class RequestTest extends SlimTestCase
 {
     /**
      * Test sets HTTP method

@@ -30,7 +30,7 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-class HeadersTest extends \PHPUnit\Framework\TestCase
+class HeadersTest extends SlimTestCase
 {
     public function testNormalizesKey(): void
     {

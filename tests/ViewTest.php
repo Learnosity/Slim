@@ -30,7 +30,7 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-class ViewTest extends \PHPUnit\Framework\TestCase
+class ViewTest extends SlimTestCase
 {
     public function testGetDataAll(): void
     {
