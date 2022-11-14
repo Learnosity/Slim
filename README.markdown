@@ -1,6 +1,23 @@
-# Slim Framework
+# Slim v2 modified to support PHP 8.1
 
-[![Build Status](https://travis-ci.org/slimphp/Slim.svg?branch=master)](https://travis-ci.org/slimphp/Slim)
+## How to include this fork in your project
+
+1. Remove old Slim: `composer remove slim/slim`
+2. Include the repository in the project's `composer.json`:
+```json
+{
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/Learnosity/Slim"
+        }
+    ]
+}
+```
+3. Require this new Slim: `composer require learnosity/slim:dev-main`
+4. You should now be able to use the project with both PHP 7.4 and PHP 8.1
+
+## Original readme follows:
 
 Slim is a PHP micro framework that helps you quickly write simple yet powerful web applications and APIs.
 Slim is easy to use for both beginners and professionals. Slim favors cleanliness over terseness and common cases

@@ -57,7 +57,7 @@ class Util
      */
     public static function stripSlashesIfMagicQuotes($rawData, $overrideStripSlashes = null)
     {
-        $strip = is_null($overrideStripSlashes) ? get_magic_quotes_gpc() : $overrideStripSlashes;
+        $strip = is_null($overrideStripSlashes) ? false : $overrideStripSlashes;
         if ($strip) {
             return self::stripSlashes($rawData);
         }
@@ -314,7 +314,7 @@ class Util
             }
             if (isset($value['expires'])) {
                 if (is_string($value['expires'])) {
-                    $timestamp = strtotime($value['expires']);
+                    $timestamp = (int) strtotime($value['expires']);
                 } else {
                     $timestamp = (int) $value['expires'];
                 }
@@ -392,7 +392,7 @@ class Util
      * This method will parse the HTTP request's `Cookie` header
      * and extract cookies into an associative array.
      *
-     * @param  string
+     * @param  string $header
      * @return array
      */
     public static function parseCookieHeader($header)

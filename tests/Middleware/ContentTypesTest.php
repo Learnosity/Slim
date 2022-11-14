@@ -30,14 +30,14 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-class ContentTypesTest extends PHPUnit_Framework_TestCase
+class ContentTypesTest extends \PHPUnit\Framework\TestCase
 {
-    public function setUp()
+    protected function setUp(): void
     {
         ob_start();
     }
 
-    public function tearDown()
+    protected function tearDown(): void
     {
         ob_end_clean();
     }
@@ -45,7 +45,7 @@ class ContentTypesTest extends PHPUnit_Framework_TestCase
     /**
      * Test parses JSON
      */
-    public function testParsesJson()
+    public function testParsesJson(): void
     {
         \Slim\Environment::mock(array(
             'REQUEST_METHOD' => 'POST',
@@ -56,6 +56,7 @@ class ContentTypesTest extends PHPUnit_Framework_TestCase
         $s = new \Slim\Slim();
         $s->add(new \Slim\Middleware\ContentTypes());
         $s->run();
+        /** @var mixed[] $body */
         $body = $s->request()->getBody();
         $this->assertTrue(is_array($body));
         $this->assertEquals('bar', $body['foo']);
@@ -64,7 +65,7 @@ class ContentTypesTest extends PHPUnit_Framework_TestCase
     /**
      * Test ignores JSON with errors
      */
-    public function testParsesJsonWithError()
+    public function testParsesJsonWithError(): void
     {
         \Slim\Environment::mock(array(
             'REQUEST_METHOD' => 'POST',
@@ -83,7 +84,7 @@ class ContentTypesTest extends PHPUnit_Framework_TestCase
     /**
      * Test parses XML
      */
-    public function testParsesXml()
+    public function testParsesXml(): void
     {
         \Slim\Environment::mock(array(
             'REQUEST_METHOD' => 'POST',
@@ -102,7 +103,7 @@ class ContentTypesTest extends PHPUnit_Framework_TestCase
     /**
      * Test ignores XML with errors
      */
-    public function testParsesXmlWithError()
+    public function testParsesXmlWithError(): void
     {
 	libxml_use_internal_errors(true);
         \Slim\Environment::mock(array(
@@ -122,7 +123,7 @@ class ContentTypesTest extends PHPUnit_Framework_TestCase
     /**
      * Test parses CSV
      */
-    public function testParsesCsv()
+    public function testParsesCsv(): void
     {
         \Slim\Environment::mock(array(
             'REQUEST_METHOD' => 'POST',
@@ -133,6 +134,7 @@ class ContentTypesTest extends PHPUnit_Framework_TestCase
         $s = new \Slim\Slim();
         $s->add(new \Slim\Middleware\ContentTypes());
         $s->run();
+        /** @var mixed[] $body */
         $body = $s->request()->getBody();
         $this->assertTrue(is_array($body));
         $this->assertEquals(2, count($body));
@@ -144,7 +146,7 @@ class ContentTypesTest extends PHPUnit_Framework_TestCase
      * Test parses request body based on media-type only, disregarding
      * any extra content-type header parameters
      */
-    public function testParsesRequestBodyWithMediaType()
+    public function testParsesRequestBodyWithMediaType(): void
     {
         \Slim\Environment::mock(array(
             'REQUEST_METHOD' => 'POST',
@@ -155,6 +157,7 @@ class ContentTypesTest extends PHPUnit_Framework_TestCase
         $s = new \Slim\Slim();
         $s->add(new \Slim\Middleware\ContentTypes());
         $s->run();
+        /** @var mixed[] $body */
         $body = $s->request()->getBody();
         $this->assertTrue(is_array($body));
         $this->assertEquals('bar', $body['foo']);
