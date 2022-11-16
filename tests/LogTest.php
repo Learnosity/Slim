@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Slim - a micro PHP 5 framework
  *
@@ -32,7 +33,7 @@
 
 class MyWriter
 {
-    public function write( $object, $level )
+    public function write($object, $level)
     {
         echo (string) $object;
 

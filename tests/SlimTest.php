@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Slim - a micro PHP 5 framework
  *
@@ -33,24 +34,31 @@
 //Mock custom view
 class CustomView extends \Slim\View
 {
-    public function render($template, $data = null) { echo "Custom view"; }
+    public function render($template, $data = null)
+    {
+        echo "Custom view";
+    }
 }
 
 //Echo Logger
 class EchoErrorLogger
 {
-   public function error($object) { echo get_class($object) .':'.$object->getMessage(); }
+    public function error($object)
+    {
+        echo get_class($object) . ':' . $object->getMessage();
+    }
 }
 
 //Mock extending class
 class Derived extends \Slim\Slim
 {
-	public static function getDefaultSettings()
-	{
+    public static function getDefaultSettings()
+    {
         return array_merge(
-            array("late-static-binding" => true)
-        , parent::getDefaultSettings());
-	}
+            array("late-static-binding" => true),
+            parent::getDefaultSettings()
+        );
+    }
 }
 
 //Mock middleware
@@ -277,7 +285,7 @@ class SlimTest extends SlimTestCase
             'mode' => 'test'
         ));
         $this->assertEquals('test', $s->getMode());
-        }
+    }
 
     /**
      * Test mode configuration
@@ -342,7 +350,9 @@ class SlimTest extends SlimTestCase
     public function testGenericRoute(): void
     {
         $s = new \Slim\Slim();
-        $callable = function () { echo "foo"; };
+        $callable = function () {
+            echo "foo";
+        };
         $route = $s->map('/bar', $callable);
         $this->assertInstanceOf('\Slim\Route', $route);
         $this->assertEmpty($route->getHttpMethods());
@@ -354,7 +364,8 @@ class SlimTest extends SlimTestCase
     public function testGetRouteIsAlsoMappedAsHead(): void
     {
         $s = new \Slim\Slim();
-        $route = $s->get('/foo', function () {});
+        $route = $s->get('/foo', function () {
+        });
         $this->assertTrue($route->supportsHttpMethod(\Slim\Http\Request::METHOD_GET));
         $this->assertTrue($route->supportsHttpMethod(\Slim\Http\Request::METHOD_HEAD));
     }
@@ -365,9 +376,15 @@ class SlimTest extends SlimTestCase
     public function testGetRoute(): void
     {
         $s = new \Slim\Slim();
-        $mw1 = function () { echo "foo"; };
-        $mw2 = function () { echo "bar"; };
-        $callable = function () { echo "xyz"; };
+        $mw1 = function () {
+            echo "foo";
+        };
+        $mw2 = function () {
+            echo "bar";
+        };
+        $callable = function () {
+            echo "xyz";
+        };
         $route = $s->get('/bar', $mw1, $mw2, $callable);
         $s->call();
         $this->assertEquals('foobarxyz', $s->response()->body());
@@ -386,9 +403,15 @@ class SlimTest extends SlimTestCase
             'PATH_INFO' => '/bar', //<-- Virtual
         ));
         $s = new \Slim\Slim();
-        $mw1 = function () { echo "foo"; };
-        $mw2 = function () { echo "bar"; };
-        $callable = function () { echo "xyz"; };
+        $mw1 = function () {
+            echo "foo";
+        };
+        $mw2 = function () {
+            echo "bar";
+        };
+        $callable = function () {
+            echo "xyz";
+        };
         $route = $s->post('/bar', $mw1, $mw2, $callable);
         $s->call();
         $this->assertEquals('foobarxyz', $s->response()->body());
@@ -407,9 +430,15 @@ class SlimTest extends SlimTestCase
             'PATH_INFO' => '/bar', //<-- Virtual
         ));
         $s = new \Slim\Slim();
-        $mw1 = function () { echo "foo"; };
-        $mw2 = function () { echo "bar"; };
-        $callable = function () { echo "xyz"; };
+        $mw1 = function () {
+            echo "foo";
+        };
+        $mw2 = function () {
+            echo "bar";
+        };
+        $callable = function () {
+            echo "xyz";
+        };
         $route = $s->put('/bar', $mw1, $mw2, $callable);
         $s->call();
         $this->assertEquals('foobarxyz', $s->response()->body());
@@ -428,9 +457,15 @@ class SlimTest extends SlimTestCase
             'PATH_INFO' => '/bar', //<-- Virtual
         ));
         $s = new \Slim\Slim();
-        $mw1 = function () { echo "foo"; };
-        $mw2 = function () { echo "bar"; };
-        $callable = function () { echo "xyz"; };
+        $mw1 = function () {
+            echo "foo";
+        };
+        $mw2 = function () {
+            echo "bar";
+        };
+        $callable = function () {
+            echo "xyz";
+        };
         $route = $s->patch('/bar', $mw1, $mw2, $callable);
         $s->call();
         $this->assertEquals('foobarxyz', $s->response()->body());
@@ -449,9 +484,15 @@ class SlimTest extends SlimTestCase
             'PATH_INFO' => '/bar', //<-- Virtual
         ));
         $s = new \Slim\Slim();
-        $mw1 = function () { echo "foo"; };
-        $mw2 = function () { echo "bar"; };
-        $callable = function () { echo "xyz"; };
+        $mw1 = function () {
+            echo "foo";
+        };
+        $mw2 = function () {
+            echo "bar";
+        };
+        $callable = function () {
+            echo "xyz";
+        };
         $route = $s->delete('/bar', $mw1, $mw2, $callable);
         $s->call();
         $this->assertEquals('foobarxyz', $s->response()->body());
@@ -470,9 +511,15 @@ class SlimTest extends SlimTestCase
             'PATH_INFO' => '/bar', //<-- Virtual
         ));
         $s = new \Slim\Slim();
-        $mw1 = function () { echo "foo"; };
-        $mw2 = function () { echo "bar"; };
-        $callable = function () { echo "xyz"; };
+        $mw1 = function () {
+            echo "foo";
+        };
+        $mw2 = function () {
+            echo "bar";
+        };
+        $callable = function () {
+            echo "xyz";
+        };
         $route = $s->options('/bar', $mw1, $mw2, $callable);
         $s->call();
         $this->assertEquals('foobarxyz', $s->response()->body());
@@ -491,9 +538,15 @@ class SlimTest extends SlimTestCase
             'PATH_INFO' => '/bar/baz', //<-- Virtual'
         ));
         $s = new \Slim\Slim();
-        $mw1 = function () { echo "foo"; };
-        $mw2 = function () { echo "bar"; };
-        $callable = function () { echo "xyz"; };
+        $mw1 = function () {
+            echo "foo";
+        };
+        $mw2 = function () {
+            echo "bar";
+        };
+        $callable = function () {
+            echo "xyz";
+        };
         $s->group('/bar', $mw1, function () use ($s, $mw2, $callable) {
             $s->get('/baz', $mw2, $callable);
         });
@@ -506,9 +559,15 @@ class SlimTest extends SlimTestCase
      */
     public function testAnyRoute(): void
     {
-        $mw1 = function () { echo "foo"; };
-        $mw2 = function () { echo "bar"; };
-        $callable = function () { echo "xyz"; };
+        $mw1 = function () {
+            echo "foo";
+        };
+        $mw2 = function () {
+            echo "bar";
+        };
+        $callable = function () {
+            echo "xyz";
+        };
         $methods = array('GET', 'POST', 'PUT', 'DELETE', 'OPTIONS');
         foreach ($methods as $i => $method) {
             \Slim\Environment::mock(array(
@@ -535,7 +594,9 @@ class SlimTest extends SlimTestCase
             'PATH_INFO' => '/bar/', //<-- Virtual
         ));
         $s = new \Slim\Slim();
-        $s->get('/bar', function () { echo "xyz"; });
+        $s->get('/bar', function () {
+            echo "xyz";
+        });
         $s->call();
         $this->assertEquals(404, $s->response()->status());
     }
@@ -549,7 +610,9 @@ class SlimTest extends SlimTestCase
             'PATH_INFO' => '/BaR', // Does not match route case
         ));
         $s = new \Slim\Slim(array('routes.case_sensitive' => false));
-        $route = $s->get('/bar', function () { echo "xyz"; });
+        $route = $s->get('/bar', function () {
+            echo "xyz";
+        });
         $s->call();
         $this->assertEquals(200, $s->response()->status());
         $this->assertEquals('xyz', $s->response()->body());
@@ -566,7 +629,9 @@ class SlimTest extends SlimTestCase
             'PATH_INFO' => '/bar/jo%20hn/smi%20th', //<-- Virtual
         ));
         $s = new \Slim\Slim();
-        $s->get('/bar/:one/:two', function ($one, $two) { echo $one . $two; });
+        $s->get('/bar/:one/:two', function ($one, $two) {
+            echo $one . $two;
+        });
         $s->call();
         $this->assertEquals('jo hnsmi th', $s->response()->body());
     }
@@ -779,7 +844,7 @@ class SlimTest extends SlimTestCase
         ));
         $s = new \Slim\Slim();
         $s->get('/bar', function () use ($s) {
-            $s->etag('123','foo');
+            $s->etag('123', 'foo');
         });
         $s->call();
     }
@@ -802,9 +867,9 @@ class SlimTest extends SlimTestCase
         $this->assertTrue(isset($header['Expires']));
 
         $this->assertEquals(
-          strtotime('5 days'),
-          strtotime($header['Expires']),
-          1 // delta
+            strtotime('5 days'),
+            strtotime($header['Expires']),
+            1 // delta
         );
     }
 
@@ -1054,7 +1119,8 @@ class SlimTest extends SlimTestCase
         try {
             $s->pass();
             $this->fail('Did not catch Slim_Exception_Pass');
-        } catch ( \Slim\Exception\Pass $e ) {}
+        } catch (\Slim\Exception\Pass $e) {
+        }
         $output = ob_get_clean();
         $this->assertEquals('', $output);
     }
@@ -1131,7 +1197,8 @@ class SlimTest extends SlimTestCase
     public function testSlimUrlFor(): void
     {
         $s = new \Slim\Slim();
-        $s->get('/hello/:name', function () {})->name('hello');
+        $s->get('/hello/:name', function () {
+        })->name('hello');
         $this->assertEquals('/foo/hello/Josh', $s->urlFor('hello', array('name' => 'Josh'))); //<-- Prepends physical path!
     }
 
@@ -1174,15 +1241,15 @@ class SlimTest extends SlimTestCase
      */
     public function testRunOutputWithOutputBufferingOnAndPreContent(): void
     {
-      $this->expectOutputString('1.2.Foo.3');  //<-- PHP unit uses OB here
-      $s = new \Slim\Slim();
-      echo "1.";
-      $s->get('/bar', function () use ($s) {
-          echo "Foo";
-      });
-      echo "2.";
-      $s->run();
-      echo ".3";
+        $this->expectOutputString('1.2.Foo.3');  //<-- PHP unit uses OB here
+        $s = new \Slim\Slim();
+        echo "1.";
+        $s->get('/bar', function () use ($s) {
+            echo "Foo";
+        });
+        echo "2.";
+        $s->run();
+        echo ".3";
     }
 
     /**
@@ -1190,11 +1257,12 @@ class SlimTest extends SlimTestCase
      */
     public function testRunDoesNotLeaveAnyOutputBuffersOpen(): void
     {
-      $level_start = ob_get_level();
-      $s = new \Slim\Slim();
-      $s->get('/bar', function () use ($s) {});
-      $s->run();
-      $this->assertEquals($level_start, ob_get_level());
+        $level_start = ob_get_level();
+        $s = new \Slim\Slim();
+        $s->get('/bar', function () use ($s) {
+        });
+        $s->run();
+        $this->assertEquals($level_start, ob_get_level());
     }
 
     /************************************************
@@ -1231,10 +1299,10 @@ class SlimTest extends SlimTestCase
     public function testFailureWhenAddingCircularMiddleware(): void
     {
         self::expectException(\RuntimeException::class);
-        $middleware = new CustomMiddleware;
-        $s = new \Slim\Slim;
+        $middleware = new CustomMiddleware();
+        $s = new \Slim\Slim();
         $s->add($middleware);
-        $s->add(new CustomMiddleware);
+        $s->add(new CustomMiddleware());
         $s->add($middleware);
         $s->run();
     }
@@ -1299,7 +1367,8 @@ class SlimTest extends SlimTestCase
         $s->notFound(function () {
             echo "Not Found";
         });
-        $s->get('/foo', function () {});
+        $s->get('/foo', function () {
+        });
         $s->call();
         list($status, $header, $body) = $s->response()->finalize();
         $this->assertEquals(404, $status);
@@ -1373,7 +1442,7 @@ class SlimTest extends SlimTestCase
         $s = new \Slim\Slim(array(
             'debug' => false
         ));
-        $s->error(function ( $e ) {
+        $s->error(function ($e) {
             if ($e instanceof \ErrorException || $e instanceof \PHPUnit\Framework\Error\Error) {
                 echo $e->getMessage();
             }
@@ -1428,7 +1497,7 @@ class SlimTest extends SlimTestCase
         $s = new \Slim\Slim(array(
             'debug' => false
         ));
-        $s->error(function ( \Exception $e ) use ($s) {
+        $s->error(function (\Exception $e) use ($s) {
             $r = $s->response();
             $r->status(503);
             $r->write('Foo');
@@ -1465,7 +1534,8 @@ class SlimTest extends SlimTestCase
         try {
             \Slim\Slim::handleErrors(E_STRICT, 'test error', 'Slim.php', 119);
             $this->fail('Slim::handleErrors didn\'t report a enabled error level');
-        } catch (\ErrorException $e) {}
+        } catch (\ErrorException $e) {
+        }
 
         error_reporting($defaultErrorReporting);
 
@@ -1475,9 +1545,12 @@ class SlimTest extends SlimTestCase
     /**
      * Slim should keep reference to a callable error callback
      */
-    public function testErrorHandler(): void {
+    public function testErrorHandler(): void
+    {
         $s = new \Slim\Slim();
-        $errCallback = function () { echo "404"; };
+        $errCallback = function () {
+            echo "404";
+        };
         $s->error($errCallback);
         $this->assertSame($errCallback, SlimAssert::readAttribute($s, 'error'));
     }
@@ -1485,7 +1558,8 @@ class SlimTest extends SlimTestCase
     /**
      * Slim should throw a Slim_Exception_Stop if error callback is not callable
      */
-    public function testErrorHandlerIfNotCallable(): void {
+    public function testErrorHandlerIfNotCallable(): void
+    {
         self::expectException(\Slim\Exception\Stop::class);
         $s = new \Slim\Slim(array("log.enabled" => false));
         $errCallback = 'foo';
@@ -1495,9 +1569,12 @@ class SlimTest extends SlimTestCase
     /**
      * Slim should keep reference to a callable NotFound callback
      */
-    public function testNotFoundHandler(): void {
+    public function testNotFoundHandler(): void
+    {
         $s = new \Slim\Slim();
-        $notFoundCallback = function () { echo "404"; };
+        $notFoundCallback = function () {
+            echo "404";
+        };
         $s->notFound($notFoundCallback);
         $this->assertSame($notFoundCallback, SlimAssert::readAttribute($s, 'notFound'));
     }
@@ -1505,7 +1582,8 @@ class SlimTest extends SlimTestCase
     /**
      * Slim should throw a Slim_Exception_Stop if NotFound callback is not callable
      */
-    public function testNotFoundHandlerIfNotCallable(): void {
+    public function testNotFoundHandlerIfNotCallable(): void
+    {
         self::expectException(\Slim\Exception\Stop::class);
         $s = new \Slim\Slim();
         $notFoundCallback = 'foo';
@@ -1531,8 +1609,12 @@ class SlimTest extends SlimTestCase
     {
         $this->expectOutputString('barfoo');
         $app = new \Slim\Slim();
-        $callable1 = function () { echo "foo"; };
-        $callable2 = function () { echo "bar"; };
+        $callable1 = function () {
+            echo "foo";
+        };
+        $callable2 = function () {
+            echo "bar";
+        };
         $app->hook('test.hook.one', $callable1); //default is 10
         $app->hook('test.hook.one', $callable2, 8);
         /** @var countable $hooks */
@@ -1593,8 +1675,10 @@ class SlimTest extends SlimTestCase
     public function testHookClear(): void
     {
         $app = new \Slim\Slim();
-        $app->hook('test.hook.one', function () {});
-        $app->hook('test.hook.two', function () {});
+        $app->hook('test.hook.one', function () {
+        });
+        $app->hook('test.hook.two', function () {
+        });
         $app->clearHooks('test.hook.two');
         $this->assertEquals(array(array()), $app->getHooks('test.hook.two'));
         $hookOne = $app->getHooks('test.hook.one');
@@ -1621,7 +1705,7 @@ class SlimTest extends SlimTestCase
 
         $this->expectOutputString($testArgA . $testArgB);
 
-	$app = new \Slim\Slim();
+        $app = new \Slim\Slim();
 
         $app->hook('test.hook.one', function ($argA, $argB) {
                 echo $argA . $argB;

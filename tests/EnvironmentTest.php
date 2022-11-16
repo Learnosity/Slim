@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Slim - a micro PHP 5 framework
  *
@@ -307,7 +308,8 @@ class EnvironmentTest extends SlimTestCase
      * X_HTTP_METHOD_OVERRIDE is sent in client HTTP request;
      * X_HTTP_METHOD_OVERRIDE is not empty;
      */
-    public function testSetsHttpMethodOverrideHeader(): void {
+    public function testSetsHttpMethodOverrideHeader(): void
+    {
         $_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE'] = 'DELETE';
         $env = \Slim\Environment::getInstance(true);
         $this->assertEquals('DELETE', $env['HTTP_X_HTTP_METHOD_OVERRIDE']);

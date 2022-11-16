@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Slim - a micro PHP 5 framework
  *
@@ -136,6 +137,4 @@ class SlimFlashTest extends \PHPUnit\Framework\TestCase
         $f->loadMessages();
         $this->assertEquals(2, count($f));
     }
-
-
 }

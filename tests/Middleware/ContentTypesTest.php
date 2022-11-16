@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Slim - a micro PHP 5 framework
  *
@@ -105,7 +106,7 @@ class ContentTypesTest extends \PHPUnit\Framework\TestCase
      */
     public function testParsesXmlWithError(): void
     {
-	libxml_use_internal_errors(true);
+        libxml_use_internal_errors(true);
         \Slim\Environment::mock(array(
             'REQUEST_METHOD' => 'POST',
             'CONTENT_TYPE' => 'application/xml',

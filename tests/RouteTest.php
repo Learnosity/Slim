@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Slim - a micro PHP 5 framework
  *
@@ -30,22 +31,27 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-class LazyInitializeTestClass {
+class LazyInitializeTestClass
+{
     public static $initialized = false;
 
-    public function __construct() {
+    public function __construct()
+    {
         self::$initialized = true;
     }
 
-    public function foo() {
+    public function foo()
+    {
     }
 }
 
-class FooTestClass {
+class FooTestClass
+{
     public static $foo_invoked = false;
     public static $foo_invoked_args = array();
 
-    public function foo() {
+    public function foo()
+    {
         self::$foo_invoked = true;
         self::$foo_invoked_args = func_get_args();
     }
@@ -55,14 +61,16 @@ class RouteTest extends SlimTestCase
 {
     public function testGetPattern(): void
     {
-        $route = new \Slim\Route('/foo', function () {});
+        $route = new \Slim\Route('/foo', function () {
+        });
 
         $this->assertEquals('/foo', $route->getPattern());
     }
 
     public function testGetName(): void
     {
-        $route = new \Slim\Route('/foo', function () {});
+        $route = new \Slim\Route('/foo', function () {
+        });
 
         $property = new \ReflectionProperty($route, 'name');
         $property->setAccessible(true);
@@ -73,7 +81,8 @@ class RouteTest extends SlimTestCase
 
     public function testSetName(): void
     {
-        $route = new \Slim\Route('/foo', function () {});
+        $route = new \Slim\Route('/foo', function () {
+        });
         $route->name('foo'); // <-- Alias for `setName()`
 
         $this->assertAttributeEquals('foo', 'name', $route);
@@ -152,7 +161,8 @@ class RouteTest extends SlimTestCase
 
     public function testGetParams(): void
     {
-        $route = new \Slim\Route('/hello/:first/:last', function () {});
+        $route = new \Slim\Route('/hello/:first/:last', function () {
+        });
         $route->matches('/hello/mr/anderson'); // <-- Parses params from argument
 
         $this->assertEquals(array(
@@ -163,7 +173,8 @@ class RouteTest extends SlimTestCase
 
     public function testSetParams(): void
     {
-        $route = new \Slim\Route('/hello/:first/:last', function () {});
+        $route = new \Slim\Route('/hello/:first/:last', function () {
+        });
         $route->matches('/hello/mr/anderson'); // <-- Parses params from argument
         $route->setParams(array(
             'first' => 'agent',
@@ -178,7 +189,8 @@ class RouteTest extends SlimTestCase
 
     public function testGetParam(): void
     {
-        $route = new \Slim\Route('/hello/:first/:last', function () {});
+        $route = new \Slim\Route('/hello/:first/:last', function () {
+        });
 
         $property = new \ReflectionProperty($route, 'params');
         $property->setAccessible(true);
@@ -194,7 +206,8 @@ class RouteTest extends SlimTestCase
     {
         self::expectException(\InvalidArgumentException::class);
 
-        $route = new \Slim\Route('/hello/:first/:last', function () {});
+        $route = new \Slim\Route('/hello/:first/:last', function () {
+        });
 
         $property = new \ReflectionProperty($route, 'params');
         $property->setAccessible(true);
@@ -208,7 +221,8 @@ class RouteTest extends SlimTestCase
 
     public function testSetParam(): void
     {
-        $route = new \Slim\Route('/hello/:first/:last', function () {});
+        $route = new \Slim\Route('/hello/:first/:last', function () {
+        });
         $route->matches('/hello/mr/anderson'); // <-- Parses params from argument
         $route->setParam('last', 'smith');
 
@@ -222,28 +236,32 @@ class RouteTest extends SlimTestCase
     {
         self::expectException(\InvalidArgumentException::class);
 
-        $route = new \Slim\Route('/hello/:first/:last', function () {});
+        $route = new \Slim\Route('/hello/:first/:last', function () {
+        });
         $route->matches('/hello/mr/anderson'); // <-- Parses params from argument
         $route->setParam('middle', 'smith'); // <-- Should trigger InvalidArgumentException
     }
 
     public function testMatches(): void
     {
-        $route = new \Slim\Route('/hello/:name', function () {});
+        $route = new \Slim\Route('/hello/:name', function () {
+        });
 
         $this->assertTrue($route->matches('/hello/josh'));
     }
 
     public function testMatchesIsFalse(): void
     {
-        $route = new \Slim\Route('/foo', function () {});
+        $route = new \Slim\Route('/foo', function () {
+        });
 
         $this->assertFalse($route->matches('/bar'));
     }
 
     public function testMatchesPatternWithTrailingSlash(): void
     {
-        $route = new \Slim\Route('/foo/', function () {});
+        $route = new \Slim\Route('/foo/', function () {
+        });
 
         $this->assertTrue($route->matches('/foo/'));
         $this->assertTrue($route->matches('/foo'));
@@ -251,7 +269,8 @@ class RouteTest extends SlimTestCase
 
     public function testMatchesPatternWithoutTrailingSlash(): void
     {
-        $route = new \Slim\Route('/foo', function () {});
+        $route = new \Slim\Route('/foo', function () {
+        });
 
         $this->assertFalse($route->matches('/foo/'));
         $this->assertTrue($route->matches('/foo'));
@@ -259,7 +278,8 @@ class RouteTest extends SlimTestCase
 
     public function testMatchesWithConditions(): void
     {
-        $route = new \Slim\Route('/hello/:first/and/:second', function () {});
+        $route = new \Slim\Route('/hello/:first/and/:second', function () {
+        });
         $route->conditions(array(
             'first' => '[a-zA-Z]{3,}'
         ));
@@ -269,7 +289,8 @@ class RouteTest extends SlimTestCase
 
     public function testMatchesWithConditionsIsFalse(): void
     {
-        $route = new \Slim\Route('/hello/:first/and/:second', function () {});
+        $route = new \Slim\Route('/hello/:first/and/:second', function () {
+        });
         $route->conditions(array(
             'first' => '[a-z]{3,}'
         ));
@@ -287,7 +308,8 @@ class RouteTest extends SlimTestCase
     public function testMatchesWithValidRfc2396PathComponent(): void
     {
         $symbols = ':@&=$,';
-        $route = new \Slim\Route('/rfc2386/:symbols', function () {});
+        $route = new \Slim\Route('/rfc2386/:symbols', function () {
+        });
 
         $this->assertTrue($route->matches('/rfc2386/' . $symbols));
     }
@@ -300,7 +322,8 @@ class RouteTest extends SlimTestCase
     public function testMatchesWithUnreservedMarks(): void
     {
         $marks = "-_.!~*'()";
-        $route = new \Slim\Route('/marks/:marks', function () {});
+        $route = new \Slim\Route('/marks/:marks', function () {
+        });
 
         $this->assertTrue($route->matches('/marks/' . $marks));
     }
@@ -309,36 +332,42 @@ class RouteTest extends SlimTestCase
     {
         $pattern = '/archive/:year(/:month(/:day))';
 
-        $route1 = new \Slim\Route($pattern, function () {});
+        $route1 = new \Slim\Route($pattern, function () {
+        });
         $this->assertTrue($route1->matches('/archive/2010'));
         $this->assertEquals(array('year' => '2010'), $route1->getParams());
 
-        $route2 = new \Slim\Route($pattern, function () {});
+        $route2 = new \Slim\Route($pattern, function () {
+        });
         $this->assertTrue($route2->matches('/archive/2010/05'));
         $this->assertEquals(array('year' => '2010', 'month' => '05'), $route2->getParams());
 
-        $route3 = new \Slim\Route($pattern, function () {});
+        $route3 = new \Slim\Route($pattern, function () {
+        });
         $this->assertTrue($route3->matches('/archive/2010/05/13'));
         $this->assertEquals(array('year' => '2010', 'month' => '05', 'day' => '13'), $route3->getParams());
     }
 
     public function testMatchesIsCaseSensitiveByDefault(): void
     {
-        $route = new \Slim\Route('/case/sensitive', function () {});
+        $route = new \Slim\Route('/case/sensitive', function () {
+        });
         $this->assertTrue($route->matches('/case/sensitive'));
         $this->assertFalse($route->matches('/CaSe/SensItiVe'));
     }
 
     public function testMatchesCanBeCaseInsensitive(): void
     {
-        $route = new \Slim\Route('/Case/Insensitive', function () {}, false);
+        $route = new \Slim\Route('/Case/Insensitive', function () {
+        }, false);
         $this->assertTrue($route->matches('/Case/Insensitive'));
         $this->assertTrue($route->matches('/CaSe/iNSensItiVe'));
     }
 
     public function testGetConditions(): void
     {
-        $route = new \Slim\Route('/foo', function () {});
+        $route = new \Slim\Route('/foo', function () {
+        });
 
         $property = new \ReflectionProperty($route, 'conditions');
         $property->setAccessible(true);
@@ -381,7 +410,8 @@ class RouteTest extends SlimTestCase
         $staticProperty->setValue(array(
             'id' => '\d+'
         ));
-        $route = new \Slim\Route('/foo', function () {});
+        $route = new \Slim\Route('/foo', function () {
+        });
 
         $this->assertAttributeEquals(array(
             'id' => '\d+'
@@ -390,7 +420,8 @@ class RouteTest extends SlimTestCase
 
     public function testMatchesWildcard(): void
     {
-        $route = new \Slim\Route('/hello/:path+/world', function () {});
+        $route = new \Slim\Route('/hello/:path+/world', function () {
+        });
 
         $this->assertTrue($route->matches('/hello/foo/bar/world'));
         $this->assertAttributeEquals(array(
@@ -400,7 +431,8 @@ class RouteTest extends SlimTestCase
 
     public function testMatchesMultipleWildcards(): void
     {
-        $route = new \Slim\Route('/hello/:path+/world/:date+', function () {});
+        $route = new \Slim\Route('/hello/:path+/world/:date+', function () {
+        });
 
         $this->assertTrue($route->matches('/hello/foo/bar/world/2012/03/10'));
         $this->assertAttributeEquals(array(
@@ -411,7 +443,8 @@ class RouteTest extends SlimTestCase
 
     public function testMatchesParamsAndWildcards(): void
     {
-        $route = new \Slim\Route('/hello/:path+/world/:year/:month/:day/:path2+', function () {});
+        $route = new \Slim\Route('/hello/:path+/world/:year/:month/:day/:path2+', function () {
+        });
 
         $this->assertTrue($route->matches('/hello/foo/bar/world/2012/03/10/first/second'));
         $this->assertAttributeEquals(array(
@@ -425,7 +458,8 @@ class RouteTest extends SlimTestCase
 
     public function testMatchesParamsWithOptionalWildcard(): void
     {
-        $route = new \Slim\Route('/hello(/:foo(/:bar+))', function () {});
+        $route = new \Slim\Route('/hello(/:foo(/:bar+))', function () {
+        });
 
         $this->assertTrue($route->matches('/hello'));
         $this->assertTrue($route->matches('/hello/world'));
@@ -435,7 +469,8 @@ class RouteTest extends SlimTestCase
 
     public function testSetMiddleware(): void
     {
-        $route = new \Slim\Route('/foo', function () {});
+        $route = new \Slim\Route('/foo', function () {
+        });
         $mw = function () {
             echo 'Foo';
         };
@@ -446,7 +481,8 @@ class RouteTest extends SlimTestCase
 
     public function testSetMiddlewareMultipleTimes(): void
     {
-        $route = new \Slim\Route('/foo', function () {});
+        $route = new \Slim\Route('/foo', function () {
+        });
         $mw1 = function () {
             echo 'Foo';
         };
@@ -462,7 +498,8 @@ class RouteTest extends SlimTestCase
 
     public function testSetMiddlewareWithArray(): void
     {
-        $route = new \Slim\Route('/foo', function () {});
+        $route = new \Slim\Route('/foo', function () {
+        });
         $mw1 = function () {
             echo 'Foo';
         };
@@ -479,7 +516,8 @@ class RouteTest extends SlimTestCase
     {
         self::expectException(\InvalidArgumentException::class);
 
-        $route = new \Slim\Route('/foo', function () {});
+        $route = new \Slim\Route('/foo', function () {
+        });
         $route->setMiddleware('doesNotExist'); // <-- Should throw InvalidArgumentException
     }
 
@@ -487,13 +525,15 @@ class RouteTest extends SlimTestCase
     {
         self::expectException(\InvalidArgumentException::class);
 
-        $route = new \Slim\Route('/foo', function () {});
+        $route = new \Slim\Route('/foo', function () {
+        });
         $route->setMiddleware(array('doesNotExist'));
     }
 
     public function testGetMiddleware(): void
     {
-        $route = new \Slim\Route('/foo', function () {});
+        $route = new \Slim\Route('/foo', function () {
+        });
 
         $property = new \ReflectionProperty($route, 'middleware');
         $property->setAccessible(true);
@@ -504,7 +544,8 @@ class RouteTest extends SlimTestCase
 
     public function testSetHttpMethods(): void
     {
-        $route = new \Slim\Route('/foo', function () {});
+        $route = new \Slim\Route('/foo', function () {
+        });
         $route->setHttpMethods('GET', 'POST');
 
         $this->assertAttributeEquals(array('GET', 'POST'), 'methods', $route);
@@ -512,7 +553,8 @@ class RouteTest extends SlimTestCase
 
     public function testGetHttpMethods(): void
     {
-        $route = new \Slim\Route('/foo', function () {});
+        $route = new \Slim\Route('/foo', function () {
+        });
 
         $property = new \ReflectionProperty($route, 'methods');
         $property->setAccessible(true);
@@ -523,7 +565,8 @@ class RouteTest extends SlimTestCase
 
     public function testAppendHttpMethods(): void
     {
-        $route = new \Slim\Route('/foo', function () {});
+        $route = new \Slim\Route('/foo', function () {
+        });
 
         $property = new \ReflectionProperty($route, 'methods');
         $property->setAccessible(true);
@@ -537,15 +580,17 @@ class RouteTest extends SlimTestCase
     public function testAppendArrayOfHttpMethods(): void
     {
         $arrayOfMethods = array('GET','POST','PUT');
-        $route = new \Slim\Route('/foo', function () {});
+        $route = new \Slim\Route('/foo', function () {
+        });
         $route->appendHttpMethods($arrayOfMethods);
 
-        $this->assertAttributeEquals($arrayOfMethods,'methods',$route);
+        $this->assertAttributeEquals($arrayOfMethods, 'methods', $route);
     }
 
     public function testAppendHttpMethodsWithVia(): void
     {
-        $route = new \Slim\Route('/foo', function () {});
+        $route = new \Slim\Route('/foo', function () {
+        });
         $route->via('PUT');
 
         $this->assertAttributeContains('PUT', 'methods', $route);
@@ -554,15 +599,17 @@ class RouteTest extends SlimTestCase
     public function testAppendArrayOfHttpMethodsWithVia(): void
     {
         $arrayOfMethods = array('GET','POST','PUT');
-        $route = new \Slim\Route('/foo', function () {});
+        $route = new \Slim\Route('/foo', function () {
+        });
         $route->via($arrayOfMethods);
 
-        $this->assertAttributeEquals($arrayOfMethods,'methods',$route);
+        $this->assertAttributeEquals($arrayOfMethods, 'methods', $route);
     }
 
     public function testSupportsHttpMethod(): void
     {
-        $route = new \Slim\Route('/foo', function () {});
+        $route = new \Slim\Route('/foo', function () {
+        });
 
         $property = new \ReflectionProperty($route, 'methods');
         $property->setAccessible(true);
@@ -578,7 +625,9 @@ class RouteTest extends SlimTestCase
     public function testDispatch(): void
     {
         $this->expectOutputString('Hello josh');
-        $route = new \Slim\Route('/hello/:name', function ($name) { echo "Hello $name"; });
+        $route = new \Slim\Route('/hello/:name', function ($name) {
+            echo "Hello $name";
+        });
         $route->matches('/hello/josh'); //<-- Extracts params from resource URI
         $route->dispatch();
     }
@@ -589,7 +638,9 @@ class RouteTest extends SlimTestCase
     public function testDispatchWithMiddleware(): void
     {
         $this->expectOutputString('First! Second! Hello josh');
-        $route = new \Slim\Route('/hello/:name', function ($name) { echo "Hello $name"; });
+        $route = new \Slim\Route('/hello/:name', function ($name) {
+            echo "Hello $name";
+        });
         $route->setMiddleware(function () {
             echo "First! ";
         });
@@ -606,7 +657,9 @@ class RouteTest extends SlimTestCase
     public function testRouteMiddlwareArguments(): void
     {
         $this->expectOutputString('foobar');
-        $route = new \Slim\Route('/foo', function () { echo "bar"; });
+        $route = new \Slim\Route('/foo', function () {
+            echo "bar";
+        });
         $route->setName('foo');
         $route->setMiddleware(function ($route) {
             echo $route->getName();
