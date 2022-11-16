@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Slim - a micro PHP 5 framework
  *
@@ -30,6 +31,7 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+
 namespace Slim;
 
 /**
@@ -305,7 +307,7 @@ class Log
     {
         if (!isset(self::$levels[$level])) {
             throw new \InvalidArgumentException('Invalid log level supplied to function');
-        } else if ($this->enabled && $this->writer && $level <= $this->level) {
+        } elseif ($this->enabled && $this->writer && $level <= $this->level) {
             if (is_array($object) || (is_object($object) && !method_exists($object, "__toString"))) {
                 $message = print_r($object, true);
             } else {

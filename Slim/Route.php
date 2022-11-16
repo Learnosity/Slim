@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Slim - a micro PHP 5 framework
  *
@@ -30,6 +31,7 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+
 namespace Slim;
 
 /**
@@ -165,10 +167,10 @@ class Route
         if (is_string($callable) && preg_match('!^([^\:]+)\:([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)$!', $callable, $matches)) {
             $class = $matches[1];
             $method = $matches[2];
-            $callable = function() use ($class, $method) {
+            $callable = function () use ($class, $method) {
                 static $obj = null;
                 if ($obj === null) {
-                    $obj = new $class;
+                    $obj = new $class();
                 }
                 /** @var callable $callback */
                 $callback = array($obj, $method);
@@ -290,7 +292,7 @@ class Route
     public function appendHttpMethods()
     {
         $args = func_get_args();
-        if(count($args) && is_array($args[0])){
+        if (count($args) && is_array($args[0])) {
             $args = $args[0];
         }
         $this->methods = array_merge($this->methods, $args);
@@ -303,7 +305,7 @@ class Route
     public function via()
     {
         $args = func_get_args();
-        if(count($args) && is_array($args[0])){
+        if (count($args) && is_array($args[0])) {
             $args = $args[0];
         }
         $this->methods = array_merge($this->methods, $args);

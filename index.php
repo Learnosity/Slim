@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Step 1: Require the Slim Framework
  *
@@ -7,6 +8,7 @@
  *
  * If you are using Composer, you can skip this step.
  */
+
 require 'Slim/Slim.php';
 
 \Slim\Slim::registerAutoloader();
