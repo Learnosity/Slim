@@ -8,8 +8,8 @@
 {
     "repositories": [
         {
-            "type": "vcs",
-            "url": "https://github.com/Learnosity/Slim"
+            "type": "git",
+            "url": "git@github.com:Learnosity/slim.git"
         }
     ]
 }
