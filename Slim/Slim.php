@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Slim - a micro PHP 5 framework
  *
@@ -30,11 +31,16 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+
 namespace Slim;
 
 // Ensure mcrypt constants are defined even if mcrypt extension is not loaded
-if (!defined('MCRYPT_MODE_CBC')) define('MCRYPT_MODE_CBC', 0);
-if (!defined('MCRYPT_RIJNDAEL_256')) define('MCRYPT_RIJNDAEL_256', 0);
+if (!defined('MCRYPT_MODE_CBC')) {
+    define('MCRYPT_MODE_CBC', 0);
+}
+if (!defined('MCRYPT_RIJNDAEL_256')) {
+    define('MCRYPT_RIJNDAEL_256', 0);
+}
 
 /**
  * Slim
@@ -107,7 +113,7 @@ class Slim
      */
     public static function autoload($className)
     {
-        $thisClass = str_replace(__NAMESPACE__.'\\', '', __CLASS__);
+        $thisClass = str_replace(__NAMESPACE__ . '\\', '', __CLASS__);
 
         $baseDir = __DIR__;
 
@@ -177,7 +183,7 @@ class Slim
             $viewClass = $c['settings']['view'];
             $templatesPath = $c['settings']['templates.path'];
 
-            $view = ($viewClass instanceOf \Slim\View) ? $viewClass : new $viewClass;
+            $view = ($viewClass instanceof \Slim\View) ? $viewClass : new $viewClass();
             $view->setTemplatesDirectory($templatesPath);
             return $view;
         });
@@ -586,7 +592,7 @@ class Slim
      *
      * @param  mixed $callable Anything that returns true for is_callable()
      */
-    public function notFound ($callable = null)
+    public function notFound($callable = null)
     {
         if (is_callable($callable)) {
             $this->notFound = $callable;
@@ -718,7 +724,7 @@ class Slim
     {
         if (!is_null($viewClass)) {
             $existingData = is_null($this->view) ? array() : $this->view->getData();
-            if ($viewClass instanceOf \Slim\View) {
+            if ($viewClass instanceof \Slim\View) {
                 $this->view = $viewClass;
             } else {
                 $this->view = new $viewClass();
@@ -807,7 +813,7 @@ class Slim
         //Set etag value
         $value = '"' . $value . '"';
         if ($type === 'weak') {
-            $value = 'W/'.$value;
+            $value = 'W/' . $value;
         }
         $this->response['ETag'] = $value;
 
@@ -1113,7 +1119,8 @@ class Slim
      * @param string $route      The route name
      * @param array $params     Associative array of URL parameters and replacement values
      */
-    public function redirectTo(string $route, array $params = array(), $status = 302){
+    public function redirectTo(string $route, array $params = array(), $status = 302)
+    {
         $this->redirect($this->urlFor($route, $params), $status);
     }
 
@@ -1264,7 +1271,7 @@ class Slim
      */
     public function add(\Slim\Middleware $newMiddleware)
     {
-        if(in_array($newMiddleware, $this->middleware)) {
+        if (in_array($newMiddleware, $this->middleware)) {
             $middleware_class = get_class($newMiddleware);
             throw new \RuntimeException("Circular Middleware setup detected. Tried to queue the same Middleware instance ({$middleware_class}) twice.");
         }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Slim - a micro PHP 5 framework
  *
@@ -394,7 +395,7 @@ class SlimHttpUtilTest extends SlimTestCase
         );
 
         $cookies = new \Slim\Http\Cookies();
-        $cookies->set('foo',  array(
+        $cookies->set('foo', array(
             'value' => $value,
             'expires' => '1 hour'
         ));

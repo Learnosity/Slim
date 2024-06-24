@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Slim - a micro PHP 5 framework
  *
@@ -32,7 +33,9 @@
 
 class MyMiddleware extends \Slim\Middleware
 {
-    public function call() {}
+    public function call()
+    {
+    }
 }
 
 class MiddlewareTest extends SlimTestCase
